@@ -1,9 +1,0 @@
-{
-    "name" : "com.example.native",
-    "description" : "example native messaging host", 
-    "path" : "native_host.py",
-    "type" : "stdio",
-    "allowed_origins" : [
-        "chrome-extension:dbggkgldiamjepphfpjgdejmadhcmbji"
-    ]
-}
