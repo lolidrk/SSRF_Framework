@@ -7,11 +7,11 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/check_ssrfs', methods=['POST'])
+@app.route('/check_ssrf', methods=['POST'])
 def check_ssrfs():
     url = request.form.get('url')
     # get result here
-    result = False
+    result = 'malicious'
 
     return render_template('result.html', result=result, url=url)
 
