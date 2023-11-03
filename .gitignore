@@ -1,2 +1,3 @@
 xgboost_model.model:Zone.Identifier
+scaler.pkl:Zone.Identifier
 *.log

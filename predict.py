@@ -1,7 +1,12 @@
 import xgboost as xgb
 import pandas as pd
+from sklearn.preprocessing import StandardScaler
+import joblib
 
 loaded_model = xgb.Booster(model_file='xgboost_model.model')
+scaler = joblib.load('scaler.pkl')
+'''              
+#data needs to be normalized tho
 input_data= pd.DataFrame({
     'domain_token_count': [4], 
     'avgpathtokenlen': [4.4], 
@@ -17,6 +22,25 @@ input_data= pd.DataFrame({
     'Entropy_Domain': [0.7844933264]
 })
 
-dtest = xgb.DMatrix(input_data)
+nomalized_input = scaler.transform(input_data)
+dtest = xgb.DMatrix(nomalized_input)
 y_pred = loaded_model.predict(dtest)
+y_pred_binary = (y_pred > 0.5).astype(int)
 print(y_pred)
+print(y_pred_binary)
+'''
+
+def make_prediction(features):
+    if features:
+        input_data = pd.DataFrame(features, index=[0])
+        normalized_input = scaler.transform(input_data)
+        dtest = xgb.DMatrix(normalized_input)
+
+        y_pred = loaded_model.predict(dtest)
+        y_pred_binary = (y_pred > 0.5).astype(int)
+
+        result = 'malicious' if y_pred_binary == 1 else 'benign'
+    else:
+        result = 'error'
+    return result
+
