@@ -1,3 +1,4 @@
 xgboost_model.model:Zone.Identifier
 scaler.pkl:Zone.Identifier
+__pycache__/
 *.log
