@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import math
 from collections import Counter
 import re
+import pandas as pd
 '''
 def extract_url_feat(url):
     try:
@@ -14,7 +15,8 @@ def extract_url_feat(url):
         return None
   '''
 #url =   "https://www.github.com/lolidrk/Breaking_monoliths/blob/main/microservices/23/addition/app.py"
-url = "https://www.example.com/resource?param1=value1&param2=value2"
+#url = "https://www.example.com/resource?param1=value1&param2=value2"
+
 def calculate_domain_token_count(url):
     domain = urllib.parse.urlparse(url).netloc
     #print(domain)
@@ -128,25 +130,44 @@ def calculate_entropy_domain(url):
     if len(domain_parts) < 2:
         return 0.0  # Not a valid domain name
     print(domain_parts)
-    domain_name = domain_parts[-2] + "." + domain_parts[-1]
+    domain_name = ".".join(domain_parts[1:])
     print(domain_name)
     pmf = [float(domain_name.count(c)) / len(domain_name) for c in set(domain_name)]
     min_scale = 0.6836405664
     max_scale = 1.0
     entropy = -sum(p * math.log(p, 2) for p in pmf)
+    print(f'{entropy=}')
     scaled_entropy = (max_scale - min_scale) * (entropy - 0) + min_scale
     scaled_entropy = min(scaled_entropy, 1.0)
+    print(f'{scaled_entropy=}')
+    return entropy
 
-    return scaled_entropy
-domain_token_count = calculate_domain_token_count(url)
-avgpathtokenlen = calculate_avgpathtokenlen(url)
-tld = calculate_tld(url)
-arg_url_ratio = caclulate_arg_url_ratio(url)
-dots_in_url = calculate_number_of_dots_in_url(url)
-arguments_longest_word_length = calculate_arguments_longest_word_length(url)
-spchar_url = caclulate_spchar_url(url)
-delimeter_path = calculate_delimeter_path(url)
-delimeter_domain = calculate_delimeter_domain(url)
-number_rate_directory_name = calculate_number_rate_directory_name(url)
-symbol_count_domain = calculate_symbol_count_domain(url)
-entropy_domain = calculate_entropy_domain(url)
+def extract_url_feat(url):
+    domain_token_count = calculate_domain_token_count(url)
+    avgpathtokenlen = calculate_avgpathtokenlen(url)
+    tld = calculate_tld(url)
+    arg_url_ratio = caclulate_arg_url_ratio(url)
+    dots_in_url = calculate_number_of_dots_in_url(url)
+    arguments_longest_word_length = calculate_arguments_longest_word_length(url)
+    spchar_url = caclulate_spchar_url(url)
+    delimeter_path = calculate_delimeter_path(url)
+    delimeter_domain = calculate_delimeter_domain(url)
+    number_rate_directory_name = calculate_number_rate_directory_name(url)
+    symbol_count_domain = calculate_symbol_count_domain(url)
+    entropy_domain = calculate_entropy_domain(url)
+    input_data = pd.DataFrame({
+        'domain_token_count': [domain_token_count],
+        'avgpathtokenlen': [avgpathtokenlen],
+        'tld': [tld],
+        'ArgUrlRatio': [arg_url_ratio],
+        'NumberofDotsinURL': [dots_in_url],
+        'Arguments_LongestWordLength': [arguments_longest_word_length],
+        'spcharUrl': [spchar_url],
+        'delimeter_Domain': [delimeter_domain],
+        'delimeter_path': [delimeter_path],
+        'NumberRate_DirectoryName': [number_rate_directory_name],
+        'SymbolCount_Domain': [symbol_count_domain],
+        'Entropy_Domain': [entropy_domain]
+    })
+
+    return input_data

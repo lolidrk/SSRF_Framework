@@ -31,14 +31,14 @@ print(y_pred_binary)
 '''
 
 def make_prediction(features):
-    if features:
-        input_data = pd.DataFrame(features, index=[0])
-        normalized_input = scaler.transform(input_data)
+    if not features.isnull().values.any():
+        normalized_input = scaler.transform(features)
         dtest = xgb.DMatrix(normalized_input)
 
         y_pred = loaded_model.predict(dtest)
+        print(f' Y PRED ISS {y_pred}')
         y_pred_binary = (y_pred > 0.5).astype(int)
-
+        print(f' PREDICTION ISSSSSSSSSSSSSSSSS {y_pred_binary}')
         result = 'malicious' if y_pred_binary == 1 else 'benign'
     else:
         result = 'error'
