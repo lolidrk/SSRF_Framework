@@ -27,7 +27,10 @@ result = 'benign'
 '''
 
 def make_prediction(features):
-    normalized_input = scaler.transform(values)
+    
+    feat = np.array(features)
+    featy = feat.reshape(1,-1)
+    normalized_input = scaler.transform(featy)
     values = np.array(normalized_input)
     my_array_reshaped = np.expand_dims(values, axis=1)
 
@@ -37,6 +40,7 @@ def make_prediction(features):
 
     predictions = loaded_model.predict(my_array_reshaped)
     print(f'PREDICTION FOR LSTM IS {predictions}')
-    y_pred_binary = (y_pred > 0.5).astype(int)
+    y_pred_binary = (predictions > 0.5).astype(int)
     print(f' PREDICTION ISSSSSSSSSSSSSSSSS {y_pred_binary}')
     result = 'malicious' if y_pred_binary == 1 else 'benign'
+    return result

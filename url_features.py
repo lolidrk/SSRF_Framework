@@ -71,7 +71,7 @@ def calculate_arguments_longest_word_length(url):
     #print(words)
     return max(len(word) for word in words) if words else 0
 
-def caclulate_spchar_url(url):
+def calculate_spchar_url(url):
     #parsed_url = urllib.parse.urlparse(url)
     special_characters = "?-_=%"
     count = 0
@@ -136,10 +136,6 @@ def calculate_entropy_domain(url):
     min_scale = 0.6836405664
     max_scale = 1.0
     entropy = -sum(p * math.log(p, 2) for p in pmf)
-    print(f'{entropy=}')
-    scaled_entropy = (max_scale - min_scale) * (entropy - 0) + min_scale
-    scaled_entropy = min(scaled_entropy, 1.0)
-    print(f'{scaled_entropy=}')
     return entropy
 
 def extract_url_feat(url):
@@ -149,25 +145,12 @@ def extract_url_feat(url):
     arg_url_ratio = caclulate_arg_url_ratio(url)
     dots_in_url = calculate_number_of_dots_in_url(url)
     arguments_longest_word_length = calculate_arguments_longest_word_length(url)
-    spchar_url = caclulate_spchar_url(url)
+    spchar_url = calculate_spchar_url(url)
     delimeter_path = calculate_delimeter_path(url)
     delimeter_domain = calculate_delimeter_domain(url)
     number_rate_directory_name = calculate_number_rate_directory_name(url)
     symbol_count_domain = calculate_symbol_count_domain(url)
     entropy_domain = calculate_entropy_domain(url)
-    input_data = pd.DataFrame({
-        'domain_token_count': [domain_token_count],
-        'avgpathtokenlen': [avgpathtokenlen],
-        'tld': [tld],
-        'ArgUrlRatio': [arg_url_ratio],
-        'NumberofDotsinURL': [dots_in_url],
-        'Arguments_LongestWordLength': [arguments_longest_word_length],
-        'spcharUrl': [spchar_url],
-        'delimeter_Domain': [delimeter_domain],
-        'delimeter_path': [delimeter_path],
-        'NumberRate_DirectoryName': [number_rate_directory_name],
-        'SymbolCount_Domain': [symbol_count_domain],
-        'Entropy_Domain': [entropy_domain]
-    })
+    input_data = [domain_token_count,avgpathtokenlen,tld,arg_url_ratio,dots_in_url,arguments_longest_word_length,spchar_url,delimeter_domain,delimeter_path,number_rate_directory_name,symbol_count_domain,entropy_domain]
 
     return input_data
