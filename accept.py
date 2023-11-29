@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template
-# Import model heree
+import predict
 import url_features
-import predicty_lstm
+#import predicty_lstm
 
 app = Flask(__name__)
 
@@ -13,8 +13,9 @@ def index():
 def check_ssrfs():
     url = request.form.get('url')
     url_features_data = url_features.extract_url_feat(url)
-    result = predicty_lstm.make_prediction(url_features_data)
-
+    #result = predicty_lstm.make_prediction(url_features_data)
+    print(type(url_features))
+    result = predict.make_prediction(url_features_data)
     return render_template('result.html', result=result, url=url)
 
 if __name__ == '__main__':
