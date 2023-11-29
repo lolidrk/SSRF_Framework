@@ -275,6 +275,7 @@ def calculate_entropy_domain(url):
     entropy = -sum(p * math.log2(p) for p in probabilities)
     return entropy
 
+
 def extract_url_feat(url):
     domain_token_count = calculate_domain_token_count(url)
     avgpathtokenlen = calculate_avgpathtokenlen(url)
